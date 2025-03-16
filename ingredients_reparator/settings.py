@@ -1,0 +1,1 @@
+cebula_words = ['cebula','cebule','cebuli']
