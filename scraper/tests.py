@@ -3,7 +3,7 @@ from unittest.mock import Mock, patch
 
 from bs4 import BeautifulSoup
 
-from methods import get_diet, get_ingredients, get_recipe
+from methods import get_diet, get_ingredients, get_recipe, replace_ingredients
 
 
 class TestGetRecipe(unittest.TestCase):
@@ -83,6 +83,24 @@ class TestGetDiet(unittest.TestCase):
         soup = BeautifulSoup(html, 'html.parser')
         self.assertEqual(get_diet(soup), ["vegan", "gluten-free"])
 
+class TestReplaceIngredients(unittest.TestCase):
+    def setUp(self):
+        # Mock the ingredients dictionary
+        self.ingredients = {
+            "sugar": ["white sugar", "brown sugar"],
+            "flour": ["all-purpose flour", "whole wheat flour"],
+            "butter": ["unsalted butter", "salted butter"],
+            "cebula": ['cebule', 'cebul', 'cebula', 'cebulek', 'cebulą', 'cebulki', 'cebulka', 'cebuli'],
+
+        }
+
+    def test_replace_ingredients_found(self):
+        self.assertEqual(replace_ingredients("white sugar",self.ingredients), "sugar")
+
+    def test_replace_ingredients_not_found(self):
+        self.assertEqual(replace_ingredients("honey",self.ingredients), "honey")
+    def test_replace_ingredients_sentence(self):
+        self.assertEqual(replace_ingredients("200 g cebuli - np. 2 mnijesze cukrowe",self.ingredients), "cebula")
 
 
 if __name__ == '__main__':

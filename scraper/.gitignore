@@ -1,3 +1,5 @@
 venv
 .venv
 ../.idea
+recipes.json
+__pycache__

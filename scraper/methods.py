@@ -1,6 +1,11 @@
+import warnings
+
 import requests
 from bs4 import BeautifulSoup
-    
+
+from ingredients_list import ingredients
+
+
 class Recipe:
     def __init__(self,title,img,recipe_link,diet,ingredients):
         self.title = title
@@ -10,6 +15,14 @@ class Recipe:
         self.ingredients = ingredients
     def __str__(self):
         return f"{self.title}\n{self.img}\n{self.recipe_link}\n{self.diet}\n{self.ingredients}"
+    def to_dict(self):
+        return {
+            "title": self.title,
+            "img": self.img,
+            "recipe_link": self.recipe_link,
+            "diet": self.diet,
+            "ingredients": self.ingredients
+        }
 
 def get_recipe(url):
     response = requests.get(url)
@@ -63,5 +76,15 @@ def get_ingredients(soup):
     ingredients_list = ingredients.findAll("li")
     ingredients = []
     for i in ingredients_list:
-        ingredients.append(i.find("span", class_="ingredient").text.lower())
+        name = i.find("span", class_="ingredient").text.lower()
+        replaced_name = replace_ingredients(name)
+        ingredients.append(replaced_name)
     return ingredients
+
+def replace_ingredients(ingredient,ingredients_list = ingredients):
+    for key, values in ingredients_list.items():
+        for value in values:
+            if value in ingredient:
+                return key
+    warnings.warn(f"Nie znaleziono {ingredient}")
+    return ingredient
