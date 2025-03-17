@@ -1,7 +1,7 @@
 import json
 
 
-def get_words_with_key_word(key_word):
+def get_words_with_key_word(key_word : str)-> set:
     word_list = set()
     for recipe in recipes:
         ingredients = recipe["ingredients"]
@@ -19,7 +19,7 @@ def get_words_with_key_word(key_word):
                     word_list.add(word)
     return word_list
 
-def get_ingredients():
+def get_ingredients() -> set:
     ingredients = set()
     for recipe in recipes:
         for ingredient in recipe["ingredients"]:
