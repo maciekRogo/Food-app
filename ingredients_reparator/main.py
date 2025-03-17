@@ -19,7 +19,6 @@ def get_words_with_key_word(key_word):
                     word_list.add(word)
     return word_list
 
-
 def get_ingredients():
     ingredients = set()
     for recipe in recipes:
@@ -42,4 +41,4 @@ with open('../scraper/recipes.json', encoding="utf-8") as f:
 # with open('ingredients.json',"w",encoding="utf-8") as file:
 #     json.dump(list(get_ingredients(recipes)),file,ensure_ascii=False)
 
-print(get_words_with_key_word("soli", recipes))
+print(get_words_with_key_word("szynk"))
