@@ -28,7 +28,7 @@ class Recipe:
         }
 
 
-def get_recipe(url, ingredients_dic=ingredients_dict):
+def get_recipe(url:str, ingredients_dic : dict=ingredients_dict) -> Recipe | None:
     response = requests.get(url)
     if response.status_code != 200:
         return None
@@ -45,7 +45,7 @@ def get_recipe(url, ingredients_dic=ingredients_dict):
     return Recipe(title, img, url, diet, ingredients)
 
 
-def get_all_recipes(pages_url):
+def get_all_recipes(pages_url:list[str]) -> list[Recipe]:
     with open('ingredients_not_found.txt', 'w') as file:
         pass
     recipes = []
@@ -60,7 +60,7 @@ def get_all_recipes(pages_url):
     return recipes
 
 
-def get_diet(soup):
+def get_diet(soup:BeautifulSoup)->list[str]:
     container = soup.find('p', class_='recipe-info')
     if container is None:
         return ["brak"]
@@ -77,7 +77,7 @@ def get_diet(soup):
     return [diet]
 
 
-def get_ingredients(soup, ingredients_dic=ingredients_dict):
+def get_ingredients(soup: BeautifulSoup, ingredients_dic : dict=ingredients_dict) -> list[str]:
     ingredients_cont = soup.findAll('ul', class_='recipe-ing-list')
     if ingredients_cont is None:
         return []
@@ -92,7 +92,7 @@ def get_ingredients(soup, ingredients_dic=ingredients_dict):
     return list(ingredients.keys())
 
 
-def replace_ingredients(ingredient, ingredients_list=ingredients_dict):
+def replace_ingredients(ingredient:str, ingredients_list:dict=ingredients_dict)->str | None:
     for key, values in ingredients_list.items():
         for value in values:
             if value in ingredient:
