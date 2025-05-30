@@ -33,6 +33,7 @@ def add_new_recipe(request):
     body = json.loads(body)
     recipe = Recipe(
         name_of_the_dish=body['title'],
+        link=body['link'],
         img_url=body['img'],
         diet_type=body['diet'],
     )
@@ -47,5 +48,19 @@ def add_new_recipe(request):
 
     return JsonResponse({'message': 'Recipe added'}, status=201)
 
+def get_recipes(request):
+    recipes = Recipe.objects.all()
+    data = []
+    for recipe in recipes:
+        ingredients = [ingredient.name for ingredient in recipe.ingredients.all()]
+        data.append({
+            "id":recipe.id,
+            "title":recipe.name_of_the_dish,
+            "link":recipe.link,
+            "img_url":recipe.img_url,
+            "diet_type":recipe.diet_type,
+            "ingredients":ingredients,
+        })
 
+    return JsonResponse(data, safe=False)
 
