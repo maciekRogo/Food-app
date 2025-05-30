@@ -11,6 +11,7 @@ class Recipe(models.Model):
     name_of_the_dish = models.CharField(max_length=255)
     img_url = models.URLField()
     diet_type = models.CharField(max_length=50)
+    link = models.CharField(max_length=255, null=True, blank=True)
     ingredients = models.ManyToManyField(Ingredient, through='RecipeIngredient')
 
     def __str__(self):
