@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-n^8j!b$v^4d&u$ppva38@_m$nr-jfa5sb*5wv)7wn_652bnooi
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',  # Jeśli korzystasz z DRF
     'recipes',  # Twoja aplikacja
+    'users',
 ]
 
 
