@@ -2,7 +2,8 @@ import json
 
 from django.http import JsonResponse
 from rest_framework import viewsets
-from .models import Recipe, Ingredient, RecipeIngredient
+from .models import Recipe, RecipeIngredient
+from ingredients.models import Ingredient
 from .serializers import RecipeSerializer, IngredientSerializer
 
 class RecipeViewSet(viewsets.ModelViewSet):
@@ -13,17 +14,6 @@ class RecipeViewSet(viewsets.ModelViewSet):
 class IngredientViewSet(viewsets.ModelViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
-
-def add_new_ingredient(request):
-    if request.method != 'POST':
-        return JsonResponse({'message': 'Method Not Allowed'}, status=405)
-    body = request.body.decode('utf-8')
-    data = json.loads(body)
-    if Ingredient.objects.filter(name=data["name"]).exists():
-        return JsonResponse({'message': 'Ingredient already exists'}, status=400)
-    Ingredient.objects.create(name=data['name'])
-    return JsonResponse({'message': 'Ingredient added'}, status=201)
-
 
 
 def add_new_recipe(request):
@@ -63,4 +53,27 @@ def get_recipes(request):
         })
 
     return JsonResponse(data, safe=False)
+
+
+def get_recipes_by_ingredients(request):
+    if request.method != 'POST':
+        return JsonResponse({'message': 'Method Not Allowed'}, status=405)
+    body = request.body.decode('utf-8')
+    body = json.loads(body)
+    recipes = Recipe.objects.all()
+    ingredients = body['ingredients']
+    filtered_recipes = []
+
+
+
+    for recipe in recipes:
+        recipe_ingredients = [ingredient.name for ingredient in recipe.ingredients.all()]
+        if not set(ingredients).issubset(set(recipe_ingredients)):
+            continue
+        filtered_recipes.append(recipe)
+
+    return JsonResponse(filtered_recipes, safe=False, status=200)
+
+
+
 
