@@ -2,7 +2,6 @@ import React, {useCallback, useEffect} from 'react';
 import { View, Text, StyleSheet, Dimensions, Image } from 'react-native';
 import Swiper from 'react-native-deck-swiper';
 import {useStore} from "@/constants/store";
-import {useFocusEffect} from "expo-router";
 
 const { width, height } = Dimensions.get('window');
 

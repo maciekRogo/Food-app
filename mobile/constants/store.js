@@ -27,9 +27,9 @@ export const useStore = create((set,get) => ({
         }
     },
     filterRecipes: ()=>{
-        let {recipes, included_ingredients,interactedRecipesId} = get();
+        let {recipes, included_ingredients,interactedRecipes} = get();
 
-        interactedRecipesId.forEach((interactedRecipe) => {
+        interactedRecipes.forEach((interactedRecipe) => {
             recipes = recipes.filter(recipe => recipe.id !== interactedRecipe.recipeId);
         })
 
@@ -49,9 +49,9 @@ export const useStore = create((set,get) => ({
 
         set({ filtered_recipes: filtered_recipes });
     },
-    interactedRecipesId: [],
+    interactedRecipes: [],
     addInteractedRecipe: (recipeId,action) => set((state) => ({
-        interactedRecipesId: [...state.interactedRecipesId, new InteractedRecipe(recipeId, action)],
+        interactedRecipes: [...state.interactedRecipes, new InteractedRecipe(recipeId, action)],
     })),
     addIngredient: (ingredient) => set((state) => ({
         included_ingredients: [...state.included_ingredients, ingredient],

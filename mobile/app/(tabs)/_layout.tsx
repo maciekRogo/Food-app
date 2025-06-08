@@ -23,6 +23,18 @@ export default function TabLayout() {
                 tabBarBackground: TabBarBackground,
             }}>
             <Tabs.Screen
+                name="explore"
+                options={{
+                    title: 'Lodówka', // Napis i emotka lodówki
+                    tabBarIcon: ({ color }) => (
+                        <Image
+                            source={require('../../assets/images/fridge.png')}
+                            style={{ width: 28, height: 28, tintColor: color }}
+                        />
+                    ),
+                }}
+            />
+            <Tabs.Screen
                 name="index"
                 options={{
                     title: 'Swipe',
@@ -35,9 +47,9 @@ export default function TabLayout() {
                 }}
             />
             <Tabs.Screen
-                name="explore"
+                name="messages"
                 options={{
-                    title: 'Lodówka', // Napis i emotka lodówki
+                    title: 'Chat',
                     tabBarIcon: ({ color }) => (
                         <Image
                             source={require('../../assets/images/fridge.png')}
@@ -45,7 +57,7 @@ export default function TabLayout() {
                         />
                     ),
                 }}
-            />
+                />
         </Tabs>
     );
 }
