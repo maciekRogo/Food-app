@@ -6,17 +6,17 @@ import {useStore} from "@/constants/store";
 const { width, height } = Dimensions.get('window');
 
 export default function TinderLikeCards() {
-    const { cards, getCards } = useStore();
+    const { filtered_recipes, getRecipes } = useStore();
 
     useEffect(() => {
         const fetchCards = async () => {
-            await getCards();
+            await getRecipes();
         };
         fetchCards();
     }, []);
 
     const onSwiped = (cardIndex: number) => {
-        console.log('Przesunięto kartę:', cards[cardIndex]);
+        console.log('Przesunięto kartę:', filtered_recipes[cardIndex]);
     };
 
     const onSwipedAll = () => {
@@ -34,7 +34,7 @@ export default function TinderLikeCards() {
         return (
             <View style={styles.card}>
                 <Text style={styles.cardText}>{card.title}</Text>
-                <Image source={{uri: card.img_url}}/>
+                <Image source={{uri: card.img_url}} style={{width:64,height:64}}/>
                 <Text>Hej mały, jeśli chcesz mnie zjeść, daj w lewo</Text>
             </View>
         );
@@ -43,7 +43,7 @@ export default function TinderLikeCards() {
     return (
         <View style={styles.container}>
             <Swiper
-                cards={cards}
+                cards={filtered_recipes}
                 renderCard={renderCard}
                 onSwiped={onSwiped}
                 onSwipedAll={onSwipedAll}
