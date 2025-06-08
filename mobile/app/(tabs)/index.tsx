@@ -35,9 +35,11 @@ export default function TinderLikeCards() {
         }
         return (
             <View style={styles.card}>
-                <Text style={styles.cardText}>{card.title}</Text>
-                <Image source={{uri: card.img_url}} style={{width:64,height:64}}/>
-                <Text>Hej mały, jeśli chcesz mnie zjeść, daj w lewo</Text>
+                <Image source={{ uri: card.img_url }} style={styles.cardImage} />
+                <Text style={styles.cardTitle}>{card.title}</Text>
+                <Text style={styles.cardDescription}>
+                    Hej mały, jeśli chcesz mnie zjeść, daj w lewo
+                </Text>
             </View>
         );
     };
@@ -129,5 +131,30 @@ const styles = StyleSheet.create({
     cardText: {
         fontSize: 20,
         fontWeight: 'bold',
+    },
+    cardImage: {
+        width: '100%',
+        height: '60%',
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
+        resizeMode: 'cover',
+    },
+
+    cardTitle: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        marginTop: 15,
+        marginHorizontal: 10,
+        color: '#333',
+        textAlign: 'center',
+    },
+
+    cardDescription: {
+        fontSize: 16,
+        marginTop: 10,
+        marginBottom: 20,
+        marginHorizontal: 15,
+        color: '#666',
+        textAlign: 'center',
     },
 });

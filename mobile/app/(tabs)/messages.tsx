@@ -1,43 +1,41 @@
-import {View, Text, StyleSheet, Dimensions, Image, ScrollView, TouchableOpacity} from "react-native";
-import {useStore} from "@/constants/store";
-import {useRouter} from "expo-router";
-const { width, height } = Dimensions.get('window');
+import { View, Text, StyleSheet, Dimensions, Image, ScrollView, TouchableOpacity } from "react-native";
+import { useStore } from "@/constants/store";
+import { useRouter } from "expo-router";
+
+const { width } = Dimensions.get('window');
 
 export default function MessagesScreen() {
-    const { recipes,interactedRecipes } = useStore();
-    let router = useRouter();
+    const { recipes, interactedRecipes } = useStore();
+    const router = useRouter();
 
-    let availableRecipes = recipes.filter(recipe => {
-        let interaction = interactedRecipes.find(interaction => interaction.recipeId === recipe.id);
-        if (interaction){
-            return interaction.action !== 'dislike';
-        }
-        return false;
+    const availableRecipes = recipes.filter(recipe => {
+        const interaction = interactedRecipes.find(interaction => interaction.recipeId === recipe.id);
+        return interaction && interaction.action !== 'dislike';
     });
 
-
     return (
-        <ScrollView
-            contentContainerStyle={{ flexGrow: 1 }}
-        >
-            <View
-                style={styles.container}
-            >
-                <Text>Messages Screen</Text>
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+            <View style={styles.container}>
+                <Text style={styles.title}>Twoje przepisy</Text>
                 {availableRecipes.length > 0 ? (
                     availableRecipes.map((recipe) => (
-                        <View key={recipe.id}>
-                            <TouchableOpacity
-                                style={styles.row}
-                                onPress={()=>{
-                                    router.push(`/messages/${recipe.id}`)
-                                }}
-                            >
-                                <Image source={{uri: recipe.img_url}} style={{width:64,height:64}}/>
-                                <Text>{recipe.title}</Text>
-                            </TouchableOpacity>
-                        </View>
-                    ))): <View>Działaj kociaku albo dzisiaj nic nie jesz</View>}
+                        <TouchableOpacity
+                            key={recipe.id}
+                            style={styles.card}
+                            onPress={() => router.push(`/messages/${recipe.id}`)}
+                        >
+                            <Image source={{ uri: recipe.img_url }} style={styles.image} />
+                            <View style={styles.textContainer}>
+                                <Text style={styles.recipeTitle}>{recipe.title}</Text>
+                                <Text style={styles.subtitle}>Kliknij, by porozmawiać</Text>
+                            </View>
+                        </TouchableOpacity>
+                    ))
+                ) : (
+                    <View style={styles.emptyContainer}>
+                        <Text style={styles.emptyText}>Działaj kociaku, albo dzisiaj nic nie jesz 😼</Text>
+                    </View>
+                )}
             </View>
         </ScrollView>
     );
@@ -45,18 +43,62 @@ export default function MessagesScreen() {
 
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#f5f5f5',
-        paddingTop: 50,
+    scrollContainer: {
+        flexGrow: 1,
+        backgroundColor: '#fff',
+        paddingTop: 40,
         paddingBottom: 80,
     },
-    row:{
+    container: {
+        alignItems: 'center',
+        paddingHorizontal: 20,
+    },
+    title: {
+        fontSize: 26,
+        fontWeight: 'bold',
+        marginBottom: 30,
+        color: '#333',
+    },
+    card: {
         flexDirection: 'row',
         alignItems: 'center',
+        backgroundColor: '#f0f0f0',
+        borderRadius: 12,
+        padding: 12,
+        marginBottom: 15,
         width: width - 40,
-        marginBottom: 20,
-    }
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        elevation: 2,
+    },
+    image: {
+        width: 64,
+        height: 64,
+        borderRadius: 8,
+        marginRight: 15,
+    },
+    textContainer: {
+        flex: 1,
+    },
+    recipeTitle: {
+        fontSize: 18,
+        fontWeight: '600',
+        color: '#222',
+    },
+    subtitle: {
+        fontSize: 14,
+        color: '#666',
+        marginTop: 4,
+    },
+    emptyContainer: {
+        marginTop: 50,
+        paddingHorizontal: 20,
+    },
+    emptyText: {
+        fontSize: 18,
+        color: '#999',
+        textAlign: 'center',
+    },
 });

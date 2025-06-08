@@ -7,6 +7,7 @@ import {initial} from "lodash";
 const apiKey = "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";
 
 
+
 const getResponse = async (message,initial) =>{
     const messages = [
         { role: "system", content: initial },
@@ -45,13 +46,17 @@ export default function ChatWithUser() {
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState("");
 
+    const goBackAndClearChat = () => {
+        setMessages([]); // Wyczyść rozmowę
+        router.navigate("messages"); // Wróć do poprzedniego ekranu
+    };
     const sendMessage = () => {
         if (input.trim()) {
             setMessages(prevMessages => [...prevMessages, { id: Date.now().toString(), text: input, sender: "user" }])
             setInput("");
-            getResponse(input,initial_prompt).then(response => {
-                            setMessages(prevMessages => [...prevMessages, { id: Date.now().toString(), text: response.choices[0].message.content, sender: "system" }]);
-                        });
+            getResponse(input, initial_prompt).then(response => {
+                setMessages(prevMessages => [...prevMessages, { id: Date.now().toString(), text: response.choices[0].message.content, sender: "system" }]);
+            });
         }
     };
 
@@ -63,87 +68,128 @@ export default function ChatWithUser() {
             {recipe && (
                 <View style={styles.header}>
                     <Image source={{ uri: recipe.img_url }} style={styles.image} />
-                    <Text style={styles.title}>Chat with {recipe.title}</Text>
+                    <Text style={styles.title}>Rozmawiasz z {recipe.title}</Text>
                 </View>
             )}
+
             <FlatList
                 data={messages}
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => (
-                    <View style={[styles.message, item.sender === "user" ? styles.userMessage : styles.otherMessage]}>
+                    <View
+                        style={[
+                            styles.messageBubble,
+                            item.sender === "user" ? styles.userMessage : styles.systemMessage,
+                        ]}
+                    >
                         <Text style={styles.messageText}>{item.text}</Text>
                     </View>
                 )}
                 contentContainerStyle={styles.messagesContainer}
             />
-            <View style={styles.inputContainer}>
+
+            <View style={styles.inputArea}>
                 <TextInput
                     style={styles.input}
                     value={input}
                     onChangeText={setInput}
-                    placeholder="Type a message..."
+                    placeholder="Napisz coś zabawnego..."
+                    placeholderTextColor="#999"
                 />
-                <Button title="Send" onPress={sendMessage} />
+                <View style={styles.sendButtonWrapper}>
+                    <Button title="Wyślij" onPress={sendMessage} color="#4CAF50" />
+                </View>
             </View>
-            <Button title="Go Back" onPress={() => router.navigate("messages")} />
+
+            <View style={styles.backButton}>
+                <Button title="← Powrót" onPress={goBackAndClearChat} color="#555" />
+
+            </View>
+
+
         </KeyboardAvoidingView>
+
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f5f5f5',
+        backgroundColor: '#fff',
     },
     header: {
         alignItems: 'center',
-        marginBottom: 10,
+        paddingVertical: 20,
+        backgroundColor: '#f9f9f9',
+        borderBottomWidth: 1,
+        borderColor: '#ddd',
     },
     image: {
-        width: 128,
-        height: 128,
-        borderRadius: 64,
+        width: 100,
+        height: 100,
+        borderRadius: 50,
+        borderWidth: 2,
+        borderColor: '#eee',
     },
     title: {
-        fontSize: 24,
+        fontSize: 22,
         fontWeight: 'bold',
         marginTop: 10,
+        color: '#333',
     },
     messagesContainer: {
         flexGrow: 1,
-        padding: 10,
+        padding: 16,
+        justifyContent: 'flex-end',
     },
-    message: {
-        padding: 10,
-        borderRadius: 10,
-        marginBottom: 10,
+    messageBubble: {
+        borderRadius: 20,
+        paddingVertical: 10,
+        paddingHorizontal: 15,
+        marginVertical: 6,
         maxWidth: '80%',
     },
     userMessage: {
         alignSelf: 'flex-end',
-        backgroundColor: '#d1f7c4',
+        backgroundColor: '#DCF8C6', // zielony jak w WhatsAppie
     },
-    otherMessage: {
+    systemMessage: {
         alignSelf: 'flex-start',
-        backgroundColor: '#f1f1f1',
+        backgroundColor: '#ECECEC', // jasny szary
     },
     messageText: {
         fontSize: 16,
+        color: '#333',
     },
-    inputContainer: {
+    inputArea: {
         flexDirection: 'row',
         alignItems: 'center',
         padding: 10,
         borderTopWidth: 1,
         borderColor: '#ddd',
+        backgroundColor: '#fff',
     },
     input: {
         flex: 1,
+        backgroundColor: '#f0f0f0',
+        borderRadius: 25,
+        paddingHorizontal: 16,
+        paddingVertical: 10,
+        fontSize: 16,
+        marginRight: 10,
         borderWidth: 1,
         borderColor: '#ccc',
+    },
+    backButton: {
+        marginTop: 10,
+        marginBottom: 20,
+        marginHorizontal: 20,
         borderRadius: 20,
-        paddingHorizontal: 15,
-        height: 40,
-        marginRight: 10,
+        overflow: 'hidden',
+        backgroundColor: '#eee',
+    },
+    sendButtonWrapper: {
+        borderRadius: 25,
+        overflow: 'hidden', // Zaokrąglenie przycisku Button
     },
 });
