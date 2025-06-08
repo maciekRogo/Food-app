@@ -1,21 +1,24 @@
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import { View, Text, StyleSheet, Dimensions, Image } from 'react-native';
 import Swiper from 'react-native-deck-swiper';
 import {useStore} from "@/constants/store";
+import {useFocusEffect} from "expo-router";
 
 const { width, height } = Dimensions.get('window');
 
 export default function TinderLikeCards() {
-    const { filtered_recipes, getRecipes } = useStore();
+    const { filtered_recipes, getRecipes, addInteractedRecipe, filterRecipes } = useStore();
 
     useEffect(() => {
         const fetchCards = async () => {
             await getRecipes();
         };
         fetchCards();
+        filterRecipes();
     }, []);
 
     const onSwiped = (cardIndex: number) => {
+
         console.log('Przesunięto kartę:', filtered_recipes[cardIndex]);
     };
 
@@ -47,6 +50,14 @@ export default function TinderLikeCards() {
                 renderCard={renderCard}
                 onSwiped={onSwiped}
                 onSwipedAll={onSwipedAll}
+                onSwipedRight={(cardIndex) => {
+                    let recipe_id = filtered_recipes[cardIndex].id;
+                    addInteractedRecipe(recipe_id,"like");
+                }}
+                onSwipedLeft={(cardIndex) => {
+                    let recipe_id = filtered_recipes[cardIndex].id;
+                    addInteractedRecipe(recipe_id,"dislike");
+                }}
                 cardIndex={0}
                 backgroundColor="transparent"
                 stackSize={3}

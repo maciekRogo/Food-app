@@ -21,19 +21,28 @@ interface Product {
     quantity: number;
     unit: string;
 }
+import {useStore} from "@/constants/store";
 
 export default function ExploreScreen() {
     const [products, setProducts] = useState<Product[]>([]);
     const [productName, setProductName] = useState('');
     const [productQuantity, setProductQuantity] = useState('');
     const [unit, setUnit] = useState('g'); // Domyślnie gramy
+    const {addIngredient, removeIngredient, filterRecipes} = useStore();
+
 
     // Ładowanie danych z AsyncStorage przy starcie
     useEffect(() => {
         const loadProducts = async () => {
             const storedProducts = await AsyncStorage.getItem('products');
             if (storedProducts) {
-                setProducts(JSON.parse(storedProducts));
+                let products_ = JSON.parse(storedProducts);
+
+                products_.forEach((product: Product) => {
+                  addIngredient(product.name);
+                })
+
+                setProducts(products_);
             }
         };
         loadProducts();
@@ -55,6 +64,9 @@ export default function ExploreScreen() {
             Alert.alert('Błąd', 'Ilość musi być liczbą większą od 0.');
             return;
         }
+
+        // Dodaje składnik do globalnego stanu
+        addIngredient(productName)
 
         setProducts((prevProducts) => {
             const existingProduct = prevProducts.find(
@@ -80,10 +92,17 @@ export default function ExploreScreen() {
 
         setProductName('');
         setProductQuantity('');
+        filterRecipes();
     };
 
     const removeProduct = (id: string) => {
+        //Usuwa składnik z globalnego stanu :)))) UWU OWO ONI-CHANN
+        let name = products.find((product) => product.id === id)?.name;
+        removeIngredient(name)
+
         setProducts((prevProducts) => prevProducts.filter((product) => product.id !== id));
+
+        filterRecipes()
     };
 
     return (
