@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Button, Image, TextInput, FlatList, KeyboardAvoidingView, Platform, Pressable, Linking } from 'react-native';
+import { View, Text, StyleSheet, Button, Image, TextInput, FlatList, KeyboardAvoidingView, Platform } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useStore } from "@/constants/store";
 import {initial} from "lodash";
@@ -7,9 +7,6 @@ import {initial} from "lodash";
 const apiKey = "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";
 
 
-export const screenOptions = {
-    tabBarStyle: { display: 'none' },
-};
 
 const getResponse = async (message,initial) =>{
     const messages = [
@@ -44,14 +41,14 @@ export default function ChatWithUser() {
     const { recipes } = useStore();
     const recipe = recipes.find(recipe => recipe.id == id);
 
-    const initial_prompt = `Jesteś ${recipe ? recipe.title : "ciekawym pączkiem"} zainteresowanym w uzytkowniku, odpowiadaj użytkownikowi i zadawaj ciekawe metafizyczne pytania, flirtuj z nim i mów żarty`;
+    const initial_prompt = `Jesteś ${recipe ? recipe.title : "ciekawym pączkiem"}, odpowiadaj użytkownikowi i zadawaj pytania aby utrzymywać rozmowę, flirtuj z nim i zadawaj żarty`;
 
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState("");
 
     const goBackAndClearChat = () => {
-        setMessages([]); // Wyczyść rozmowę
-        router.navigate("/(tabs)/messages1"); // Wróć do poprzedniego ekranu
+        setMessages([]);
+        router.navigate("/(tabs)/messages");
     };
     const sendMessage = () => {
         if (input.trim()) {
@@ -70,10 +67,9 @@ export default function ChatWithUser() {
         >
             {recipe && (
                 <View style={styles.header}>
-                    <Pressable onPress={()=> Linking.openURL(recipe.link)}>
-                        <Image source={{ uri: recipe.img_url }} style={styles.image} />
-                    </Pressable>
+                    <Image source={{ uri: recipe.img_url }} style={styles.image} />
                     <Text style={styles.title}>Rozmawiasz z {recipe.title}</Text>
+                    <Text style={{ color: '#666', fontSize: 14, marginTop: 5 }}>{recipe.link}</Text>
                 </View>
             )}
 
