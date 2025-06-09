@@ -2,7 +2,7 @@ import json
 
 from methods import *
 
-urls = [f"https://aniagotuje.pl/pomysl-na/obiad/strona/{i}" for i in range(1, 52)]
+urls = [f"https://aniagotuje.pl/pomysl-na/obiad/strona/{i}" for i in range(1, 3)]
 recipes = get_all_recipes(urls)
 
 recipes_dicts = [recipe.to_dict() for recipe in recipes]
