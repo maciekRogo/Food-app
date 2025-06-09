@@ -15,17 +15,16 @@ export default function TabLayout() {
                 tabBarActiveTintColor: 'pink',
                 tabBarInactiveTintColor: 'gray',
                 tabBarStyle: {
-                    backgroundColor: 'white', // Białe tło menu
+                    backgroundColor: 'white',
                     ...(Platform.OS === 'ios' ? { position: 'absolute' } : {}),
                 },
-                headerShown: false,
-                tabBarButton: HapticTab,
-                tabBarBackground: TabBarBackground,
+                headerShown: true,
             }}>
             <Tabs.Screen
                 name="explore"
                 options={{
-                    title: 'Lodówka', // Napis i emotka lodówki
+                    title: 'Lodówka',
+                    headerTitle: 'Lodówka', // Custom header title
                     tabBarIcon: ({ color }) => (
                         <Image
                             source={require('../../assets/images/fridge.png')}
@@ -38,6 +37,7 @@ export default function TabLayout() {
                 name="index"
                 options={{
                     title: 'Swipe',
+                    headerTitle: 'Swipe', // Custom header title
                     tabBarIcon: ({ color }) => (
                         <Image
                             source={require('../../assets/images/swipe.png')}
@@ -47,9 +47,10 @@ export default function TabLayout() {
                 }}
             />
             <Tabs.Screen
-                name="messages"
+                name="messages1"
                 options={{
                     title: 'Chat',
+                    headerTitle: 'Chat', // Custom header title
                     tabBarIcon: ({ color }) => (
                         <Image
                             source={require('../../assets/images/fridge.png')}
@@ -57,7 +58,7 @@ export default function TabLayout() {
                         />
                     ),
                 }}
-                />
+            />
         </Tabs>
     );
 }
