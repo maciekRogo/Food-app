@@ -92,3 +92,26 @@ Ekstrahuje składniki z obiektu BeautifulSoup.
 
 - `list`: Lista składników przepisu, lub pusta lista jeśli nie znaleziono składników.
 
+### replace_ingredients(ingredient, ingredients_list=ingredients)
+
+Zastępuje składnik jego odpowiednikiem z listy składników.
+
+#### Parametry
+
+- `ingredient` (str): Nazwa składnika do zastąpienia.
+- `ingredients_list` (dict, opcjonalnie): Słownik zawierający listę składników do zastąpienia. Domyślnie używa globalnej zmiennej `ingredients`.
+
+#### Zwraca
+
+- `str`: Zastąpiona nazwa składnika, jeśli znaleziono odpowiednik w `ingredients_list`. W przeciwnym razie zwraca oryginalną nazwę składnika i generuje ostrzeżenie.
+
+#### Ostrzeżenia
+
+- Generuje ostrzeżenie, jeśli składnik nie został znaleziony w `ingredients_list`.
+
+#### Przykład
+
+```python
+ingredient = "łyżka sezamu"
+replaced_ingredient = replace_ingredients(ingredient)
+print(replaced_ingredient)  # Może zwrócić "sezam" lub oryginalną nazwę składnika
