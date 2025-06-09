@@ -7,6 +7,9 @@ import {initial} from "lodash";
 const apiKey = "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";
 
 
+export const screenOptions = {
+    tabBarStyle: { display: 'none' },
+};
 
 const getResponse = async (message,initial) =>{
     const messages = [

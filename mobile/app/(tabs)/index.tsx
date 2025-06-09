@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     },
     card: {
         width: width * 0.9,
-        height: height -170,
+        height: height -190,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'white',
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.3,
         shadowRadius: 5,
         elevation: 5,
-        marginTop: 40,
+        marginTop: 10,
     },
     cardText: {
         fontSize: 20,

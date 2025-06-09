@@ -23,6 +23,7 @@ interface Product {
 }
 import {useStore} from "@/constants/store";
 
+
 export default function ExploreScreen() {
     const [products, setProducts] = useState<Product[]>([]);
     const [productName, setProductName] = useState('');
@@ -109,6 +110,7 @@ export default function ExploreScreen() {
         <KeyboardAvoidingView
             style={{ flex: 1 }}
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+
             <ScrollView
                 contentContainerStyle={{ flexGrow: 1 }}
                 keyboardShouldPersistTaps="handled">

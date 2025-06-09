@@ -22,7 +22,7 @@ export default function MessagesScreen() {
                         <TouchableOpacity
                             key={recipe.id}
                             style={styles.card}
-                            onPress={() => router.push(`/messages/${recipe.id}`)}
+                            onPress={() => router.push(`/cos/${recipe.id}`)}
                         >
                             <Image source={{ uri: recipe.img_url }} style={styles.image} />
                             <View style={styles.textContainer}>
